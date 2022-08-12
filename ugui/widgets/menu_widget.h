@@ -19,6 +19,7 @@ typedef uint32_t menu_get_height_callback(void *menu_widget, uint16_t section, v
 typedef void menu_get_header_callback(void* menu_widget, char* header);
 typedef void menu_get_data_callback(void* menu_widget, uint16_t index, char* title, char* data);
 typedef void menu_select_callback(void *menu_widget, uint16_t index, void *callback_context);
+typedef void menu_index_callback(void *menu_widget, uint16_t index, void *callback_context);
 
 typedef void header_draw_callback(ugui_graphics_t *graphics_ctx, ugui_rect_t *bounds, char* title);
 typedef void menu_draw_callback(ugui_graphics_t *graphics_ctx, ugui_rect_t *bounds, char* title, char* data);
@@ -32,6 +33,7 @@ typedef struct ugui_menu_widget_data_callbacks_s {
 	menu_get_data_callback *get_data;
 
 	menu_select_callback *select;
+    menu_index_callback *index;
 
 } ugui_menu_widget_data_callbacks_t;
 
