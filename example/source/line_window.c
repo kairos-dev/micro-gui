@@ -61,7 +61,7 @@ static void line_layer_update(ugui_layer_t* layer, void* graphics_ctx, void* lay
 
 	ugui_graphics_draw_text(graphics_ctx,
 	                        "test",
-	                        &font_robotomono_regular_18,
+	                        &font_robotomono_regular_16,
 	(ugui_point_t) {
 		.x = w / 2, .y = h / 2
 	});

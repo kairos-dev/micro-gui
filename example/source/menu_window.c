@@ -1,6 +1,7 @@
 
 #include "menu_window.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -38,13 +39,13 @@ ugui_window_t* text_test_window;
 
 //Demo list (for use in menu widget)
 demo_t demos[] = {
-	{"Layer Demo", "Demonstrates layered rendering contexts", &layer_test_window},
-	{"Ellipse Demo", "Demonstrates rendering of ellipses", &circle_test_window},
-	{"Line Demo", "Demonstrates rendering of lines", &line_test_window},
-	{"Text Demo", "Demonstrates rendering of text", &text_test_window}
+	{"Calendar", "eventos importantes", &layer_test_window},
+	{"Alarmes", "acorde cedo", &circle_test_window},
+	{"Timer", "conte o tempo", &line_test_window},
+	{"Settings", "configuracoes", &text_test_window}
 };
 
-char* title = "Micro-GUI (ugui) Demo Application";
+char* title = "22:18 - 10/08/22";
 
 /***			Internal Functions				***/
 
@@ -83,6 +84,10 @@ static void example_menu_select(void *menu_layer, uint16_t index, void *callback
 	ugui_window_stack_push(gui, new_window);
 }
 
+static void example_menu_index(void *menu_layer, uint16_t index, void *callback_context)
+{
+    printf("%s - index: %d\n",__func__, index);
+}
 //Event handler for demo screens
 //This pops the demo window off the stack to return to this menu
 static void demo_handle_event(ugui_window_t* window, int event, void* ctx)
@@ -90,6 +95,27 @@ static void demo_handle_event(ugui_window_t* window, int event, void* ctx)
 	if ((event == UGUI_EVT_BACK) || event == UGUI_EVT_LEFT) {
 		ugui_window_stack_pop(gui);
 	}
+}
+
+void draw_row_callback(ugui_graphics_t *graphics_ctx, ugui_rect_t *bounds, char* title, char* data)
+{
+    /* printf("%s - %s\n", __func__, title); */
+}
+
+void draw_header_callback(ugui_graphics_t *graphics_ctx, ugui_rect_t *bounds, char* title)
+{
+    /* printf("%s - %s\n", __func__, title); */
+}
+
+
+uint32_t get_cell_height_callback(void *menu_widget, void* data)
+{
+    return 100;
+}
+
+uint32_t get_header_height_callback(void *menu_widget, void* data)
+{
+    return 100;
 }
 
 /***			External Functions				***/
@@ -111,10 +137,17 @@ ugui_window_t *menu_window_create(uint32_t w, uint32_t h)
 	example_callbacks.get_header = example_menu_get_header;
 	example_callbacks.get_data = example_menu_get_data;
 	example_callbacks.select = example_menu_select;
+	example_callbacks.index = example_menu_index;
 
 	ugui_menu_widget_set_callbacks(menu_widget, &example_callbacks);
 
+    /* ugui_menu_widget_draw_callbacks_t draw_callbacks; */
+    /* draw_callbacks.draw_row = draw_row_callback; */
+    /* draw_callbacks.draw_header = draw_header_callback; */
+    /* draw_callbacks.get_cell_height = get_cell_height_callback; */
+    /* draw_callbacks.get_header_height = get_header_height_callback; */
 
+    /* ugui_menu_widget_set_draw(menu_widget, &draw_callbacks); */
 	//Bind widget to layer and window context
 	ugui_layer_t* base_layer = ugui_window_get_base_layer(menu_window);
 

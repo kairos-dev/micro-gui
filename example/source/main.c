@@ -10,8 +10,8 @@
 
 #include "menu_window.h"
 
-#define GUI_WIDTH	640
-#define GUI_HEIGHT	480
+#define GUI_WIDTH	200
+#define GUI_HEIGHT	200
 
 ugui_t* gui;
 ugui_window_t* menu_test_window;
