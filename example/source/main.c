@@ -9,12 +9,14 @@
 #include "ugui/bmp.h"
 
 #include "menu_window.h"
+#include "watchface.h"
 
 #define GUI_WIDTH	200
 #define GUI_HEIGHT	200
 
 ugui_t* gui;
 ugui_window_t* menu_test_window;
+ugui_window_t* watchface_window;
 int running;
 
 int get_input_event()
@@ -71,12 +73,14 @@ printf("\r\n------------------------------------\r\n");
 	gui = ugui_create(GUI_WIDTH, GUI_HEIGHT);
 	running = 1;
 
+    watchface_window = watchface_create(GUI_WIDTH, GUI_HEIGHT);
 	menu_test_window = menu_window_create(GUI_WIDTH, GUI_HEIGHT);
-	//ugui_window_set_event_handler(menu_test_window, handle_event, NULL);
+	/* ugui_window_set_event_handler(menu_test_window, handle_event, NULL); */
 #if 0
 
 #endif
-	ugui_window_stack_push(gui, menu_test_window);
+	ugui_window_stack_push(gui, watchface_window);
+	/* ugui_window_stack_push(gui, menu_test_window); */
 
 	ugui_render(gui);
 
