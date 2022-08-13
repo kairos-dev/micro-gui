@@ -44,9 +44,9 @@ static void menu_widget_layer_update(ugui_layer_t* layer, void* graphics_ctx, vo
 
 	//Draw cells
 	//TODO: support for 2d cells
-	for (uint8_t i = 0; i < min_rows; i++) {
+	for (uint8_t i = 0; i <= min_rows; i++) {
 		//Calculate row offset in pixels
-		cell_bounds.y = header_height + i * row_height;
+		cell_bounds.y = header_height + (i-menu_widget->selected) * row_height;
 
 		menu_widget->data_callbacks.get_data(menu_widget, i + menu_widget->offset, title, data);
 		menu_widget->draw_callbacks.draw_row(graphics_ctx, &cell_bounds, title, data);
