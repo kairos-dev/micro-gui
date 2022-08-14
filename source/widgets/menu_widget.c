@@ -1,6 +1,7 @@
 
 #include "ugui/widgets/menu_widget.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #define UGUI_MENU_WIDGET_MAX_CELLS	8
@@ -134,31 +135,39 @@ static void ugui_menu_widget_basic_event_handler(ugui_window_t *window, int even
 	int max_rows = menu_widget->data_callbacks.get_num_rows(menu_widget, NULL);
 
 	switch (event) {
-	case UGUI_EVT_UP:
-		if (menu_widget->selected > 0)
+        case UGUI_EVT_UP:
+            if (menu_widget->selected > 0)
+                {
+                    menu_widget->selected --;
+                    if(menu_widget->data_callbacks.index != NULL) {
+                        menu_widget->data_callbacks.index(menu_widget, menu_widget->selected, NULL);
+                    }
+                }
+            break;
+        case UGUI_EVT_DOWN:
+            if (menu_widget->selected < (max_rows - 1))
             {
-                menu_widget->selected --;
+                menu_widget->selected ++;
                 if(menu_widget->data_callbacks.index != NULL) {
                     menu_widget->data_callbacks.index(menu_widget, menu_widget->selected, NULL);
                 }
             }
-		break;
-	case UGUI_EVT_DOWN:
-		if (menu_widget->selected < (max_rows - 1))
-        {
-            menu_widget->selected ++;
-            if(menu_widget->data_callbacks.index != NULL) {
-                menu_widget->data_callbacks.index(menu_widget, menu_widget->selected, NULL);
+            break;
+        case UGUI_EVT_RIGHT:
+        case UGUI_EVT_SELECT:
+            //TODO: select callback
+            if(menu_widget->data_callbacks.select != NULL) {
+                menu_widget->data_callbacks.select(menu_widget, menu_widget->selected, NULL);
             }
-        }
-		break;
-	case UGUI_EVT_RIGHT:
-	case UGUI_EVT_SELECT:
-		//TODO: select callback
-		if(menu_widget->data_callbacks.select != NULL) {
-			menu_widget->data_callbacks.select(menu_widget, menu_widget->selected, NULL);
-		}
-		break;
+            break;
+        case UGUI_EVT_BACK:
+        case UGUI_EVT_LEFT:
+            if(menu_widget->data_callbacks.exit != NULL) {
+                menu_widget->data_callbacks.exit(menu_widget, menu_widget->selected, NULL);
+            }
+            break;
+        default:
+            break;
 	}
 }
 
@@ -200,6 +209,7 @@ void ugui_menu_widget_set_callbacks(ugui_menu_widget_t* menu_widget, ugui_menu_w
 	menu_widget->data_callbacks.get_data = callbacks->get_data;
 	menu_widget->data_callbacks.select = callbacks->select;
 	menu_widget->data_callbacks.index = callbacks->index;
+	menu_widget->data_callbacks.exit = callbacks->exit;
 }
 
 void ugui_menu_widget_set_draw(ugui_menu_widget_t* menu_widget, ugui_menu_widget_draw_callbacks_t* callbacks)
